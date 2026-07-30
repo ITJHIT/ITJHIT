@@ -3,11 +3,20 @@
 I build the infrastructure layer of trading and settlement systems — the parts
 that have to stay correct under concurrency, partial failure, and adversarial
 input, not just fast in the common case. Two repositories anchor this
-profile, each picked to demonstrate a different half of that: **low-latency
-systems programming** and **deterministic distributed state**.
+profile, each built to demonstrate a different half of that discipline:
+**low-latency systems programming in C++**, the OMS/exchange infrastructure
+real-time trading firms run on, and **deterministic distributed state in
+Go**, the same correctness discipline applied to blockchain settlement.
 
-No alpha, no strategy secrets in either one — this is the infrastructure
-layer, which is exactly the part that generalizes across firms.
+Both are the same bet: understanding markets from the infrastructure layer up
+— not just the strategy layer — is what I'm building toward a career in
+capital markets. Low-latency trading systems and blockchain are two different
+rails money moves on today; I wanted to build both from scratch before
+trying to work in either.
+
+No alpha, no strategy secrets in either repo — this is the infrastructure
+layer, which is exactly the part that generalizes across firms and across
+rails.
 
 ---
 
