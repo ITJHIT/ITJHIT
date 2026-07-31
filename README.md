@@ -8,19 +8,17 @@ profile, each built to demonstrate a different half of that discipline:
 real-time trading firms run on, and **deterministic distributed state in
 Go**, the same correctness discipline applied to blockchain settlement.
 
-Both are the same bet: understanding markets from the infrastructure layer up
-— not just the strategy layer — is what I'm building toward a career in
-capital markets. Low-latency trading systems and blockchain are two
-different rails money moves on today, and Korean 증권사 are now building the
-infrastructure that has to run both at once — regulated security-token
-(STO, 토큰증권) trading and clearing, where a matching engine needs
-exchange-grade correctness *and* every party has to independently
-re-derive the same settlement state. I wanted to build both rails from
-scratch, separately, before working on where they intersect.
+Both are the same conviction, tested under two different constraints: a
+market is only as trustworthy as the infrastructure underneath it, and that
+infrastructure has to be provably correct before it's allowed to be fast. I
+didn't want to take either half on faith — not the low-latency systems
+real trading firms already run on, and not the blockchain settlement
+everyone assumes is trustless by default — so I built both from the ground
+up and made each one fail in a real CI run before calling it done.
 
 No alpha, no strategy secrets in either repo — this is the infrastructure
-layer, which is exactly the part that generalizes across firms, across
-rails, and into where the two are starting to merge.
+layer, the part that holds regardless of which rail the money is moving on,
+or which firm is running the exchange.
 
 ---
 
@@ -65,10 +63,10 @@ head-to-head against continuous matching: 10/0 fills favoring the
 front-runner under continuous matching, 5/5 regardless of order under batch
 auction, same input).
 
-That combination — matching and clearing (청산) coming out of one state
-every node independently re-derives, with fairness enforced against the
-party running the sequencer itself, not just against other traders — is the
-settlement shape a regulated STO exchange has to have. It's the same
+That combination — matching and clearing coming out of one state every node
+independently re-derives, with fairness enforced against the party running
+the sequencer itself, not just against other traders — is the settlement
+shape a regulated market for security tokens has to have. It's the same
 problem `lowlat-oms-core` solves for matching speed, applied instead to
 matching that has to be provably fair and byte-identical across every
 validator.
@@ -105,7 +103,7 @@ the naive version producing eight different answers over two hundred runs of
 *identical* input, the real one producing one. Same price-time-priority
 matching discipline as `lowlat-oms-core`, opposite constraint: this one has
 to agree byte-for-byte across every validator, not just be fast on one
-machine — the guarantee a regulated STO 청산기관 needs when no single
+machine — the guarantee a regulated clearing venue needs when no single
 party's ledger is allowed to be the ground truth.
 
 ---
