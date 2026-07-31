@@ -68,6 +68,19 @@ regression test that drove the real `Chain.AddBlock` path instead of testing
 the exchange package in isolation, exactly the kind of bug that isolated
 unit tests are structurally unable to see.
 
+The state root itself was a flat hash fold at first — a placeholder, not a
+real trie. Replaced it with a from-scratch SHA-256 Merkle Patricia Trie
+(two-level: world trie + per-account storage tries), then built the thing
+that trie exists to enable: account/storage Merkle proofs over RPC, verified
+independently by the CLI against a PoW-checked header rather than just
+trusted from the node. Proved the network layer the same way — a
+`ConnectionManager` and an inbound-stream cap now bound eclipse-style sybil
+connections and sync-flood DoS, with adversarial tests confirmed to fail
+without either defense before they were allowed to pass with it. Real 3-node
+convergence demonstrated over actual Docker containers discovering each
+other via libp2p, not an in-process harness handing them each other's
+addresses.
+
 ### [onchain-orderbook](https://github.com/ITJHIT/onchain-orderbook) — the matching engine underneath, Go
 
 [![CI](https://github.com/ITJHIT/onchain-orderbook/actions/workflows/ci.yml/badge.svg)](https://github.com/ITJHIT/onchain-orderbook/actions/workflows/ci.yml)
