@@ -59,12 +59,7 @@ book state folded automatically into the chain's state root, and a batch-auction
 matching mode as a structural defense against block-producer MEV (demonstrated
 head-to-head against continuous matching: 10/0 fills favoring the
 front-runner under continuous matching, 5/5 regardless of order under batch
-auction, same input). The order book itself lives in a companion repository,
-[onchain-orderbook](https://github.com/ITJHIT/onchain-orderbook), built around
-a determinism budget (no floats, no map iteration on any output path, no wall
-clock) and proven, not asserted: an adversarial test computes the state root
-the naive way alongside the real one, and shows the naive version producing
-eight different answers over two hundred runs of *identical* input.
+auction, same input).
 
 **What integrating the two actually found:** the chain's consensus path
 (mining and block validation) was calling a stale version of the state
@@ -73,7 +68,22 @@ regression test that drove the real `Chain.AddBlock` path instead of testing
 the exchange package in isolation, exactly the kind of bug that isolated
 unit tests are structurally unable to see.
 
+### [onchain-orderbook](https://github.com/ITJHIT/onchain-orderbook) — the matching engine underneath, Go
+
+[![CI](https://github.com/ITJHIT/onchain-orderbook/actions/workflows/ci.yml/badge.svg)](https://github.com/ITJHIT/onchain-orderbook/actions/workflows/ci.yml)
+
+The engine l1chain's on-chain exchange is built on, standalone: a
+determinism budget (no floats, no map iteration on any output path, no wall
+clock) and proof instead of assertion — an adversarial test computes the
+state root the naive way (walking a map) alongside the real one, and shows
+the naive version producing eight different answers over two hundred runs of
+*identical* input, the real one producing one. Same price-time-priority
+matching discipline as `lowlat-oms-core`, opposite constraint: this one has
+to agree byte-for-byte across every validator, not just be fast on one
+machine.
+
 ---
 
-Both repos follow the same rule: a bug found by a real CI run and root-caused
-is worth more in a portfolio than a benchmark that was never allowed to fail.
+All three repos follow the same rule: a bug found by a real CI run and
+root-caused is worth more in a portfolio than a benchmark that was never
+allowed to fail.
