@@ -10,13 +10,17 @@ Go**, the same correctness discipline applied to blockchain settlement.
 
 Both are the same bet: understanding markets from the infrastructure layer up
 — not just the strategy layer — is what I'm building toward a career in
-capital markets. Low-latency trading systems and blockchain are two different
-rails money moves on today; I wanted to build both from scratch before
-trying to work in either.
+capital markets. Low-latency trading systems and blockchain are two
+different rails money moves on today, and Korean 증권사 are now building the
+infrastructure that has to run both at once — regulated security-token
+(STO, 토큰증권) trading and clearing, where a matching engine needs
+exchange-grade correctness *and* every party has to independently
+re-derive the same settlement state. I wanted to build both rails from
+scratch, separately, before working on where they intersect.
 
 No alpha, no strategy secrets in either repo — this is the infrastructure
-layer, which is exactly the part that generalizes across firms and across
-rails.
+layer, which is exactly the part that generalizes across firms, across
+rails, and into where the two are starting to merge.
 
 ---
 
@@ -61,6 +65,14 @@ head-to-head against continuous matching: 10/0 fills favoring the
 front-runner under continuous matching, 5/5 regardless of order under batch
 auction, same input).
 
+That combination — matching and clearing (청산) coming out of one state
+every node independently re-derives, with fairness enforced against the
+party running the sequencer itself, not just against other traders — is the
+settlement shape a regulated STO exchange has to have. It's the same
+problem `lowlat-oms-core` solves for matching speed, applied instead to
+matching that has to be provably fair and byte-identical across every
+validator.
+
 **What integrating the two actually found:** the chain's consensus path
 (mining and block validation) was calling a stale version of the state
 transition function, one that didn't know about order identity — caught by a
@@ -93,7 +105,8 @@ the naive version producing eight different answers over two hundred runs of
 *identical* input, the real one producing one. Same price-time-priority
 matching discipline as `lowlat-oms-core`, opposite constraint: this one has
 to agree byte-for-byte across every validator, not just be fast on one
-machine.
+machine — the guarantee a regulated STO 청산기관 needs when no single
+party's ledger is allowed to be the ground truth.
 
 ---
 
