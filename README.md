@@ -21,6 +21,16 @@ Every gate documents the failure it exists to catch, and each of those failures 
 
 ---
 
+## [infra-assumption-feed](https://github.com/ITJHIT/infra-assumption-feed): model inputs from primary sources only
+
+[![CI](https://github.com/ITJHIT/infra-assumption-feed/actions/workflows/ci.yml/badge.svg)](https://github.com/ITJHIT/infra-assumption-feed/actions/workflows/ci.yml)
+
+One command pulls a Korean infrastructure model's market inputs (wholesale power prices, the policy rate, government and corporate bond yields) from the power exchange and the central bank, and stamps every number with its source, period and age. If any source fails, nothing is written. There is no fallback value.
+
+Its first run checked a solar draft's quoted power prices against the exchange's own table. Two of the three, taken from an industry blog, were wrong. The draft's "fell more than 31 won in a month" was really 29.37.
+
+---
+
 ## Earlier work: the same discipline, applied to systems
 
 ### [lowlat-oms-core](https://github.com/ITJHIT/lowlat-oms-core): low-latency OMS core, C++17
